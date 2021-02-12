@@ -3,56 +3,70 @@ let generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
 function writePassword() {
-    // let password = generatePassword();
-    // let passwordText = document.querySelector("#password");
-    
-    // passwordText.value = password;
-  
     // this inquires about password length and stores answer
-    let passLength
+    passLength = window.prompt("How many many characters do you want your password to be? Please choose a number between 8 and 128.");
 
-    function passLengthQuestion() { 
-    
-        passLength = window.prompt("How many many characters do you want your password to be? Please choose a number between 8 and 128.");
+    // failsafe if user chooses invalid password length
+    if (passLength < 8 || passLength > 128 || passLength == "") {
+        window.alert("Error. Please be sure you're choosing a number between 8 and 128.");
+        passLength = "";
+        return;
+    };
 
-        // failsafe if user chooses invalid password length
-        if (passLength < 8 || passLength > 128 || passLength == "") {
-            window.alert("Error. Please be sure you're including a number between 8 and 128.");
-            passLengthQuestion();
+    // this inquires about what content should be included in the generated password 
+    let lowerCase = window.confirm("Would you like your password to have any lowercase letters? \na, b, c, d... etc.");
+    let upperCase = window.confirm("Would you like your password to have any uppercase letters? \nA, B, C, D... etc.");
+    let numeric = window.confirm("Would you like your password to include numbers? \n1, 2, 3, 4... etc.");
+    let special = window.confirm("Would you like your password to have any special characters? \n!, @, #, $... etc.");
+
+    // 
+    if (!lowerCase && !upperCase && !numeric && !special) {
+        window.alert("Error. You must choose at least one character type.");
+        return; 
+    };
+
+    // arrays for lower, upper, numeric, and special
+    let lowerCaseArray = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    let upperCaseArray = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+    let numericArray = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    let specialArray = [" ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~"];
+
+    // the following creates the master array based on user's choice of character types to include 
+    let masterArray = [];
+    if (lowerCase){
+        masterArray = masterArray.concat(lowerCaseArray); 
+    };
+    if (upperCase){
+        masterArray = masterArray.concat(upperCaseArray);
+    };
+    if (numeric) {
+        masterArray = masterArray.concat(numericArray);
+    };
+    if (special) {
+        masterArray = masterArray.concat(specialArray);
+    };
+
+    // this is the empty array the random characters will be added to
+    let passwordArray = [];
+
+    // this generates a random character (for each iteration) that is then added to the empty passwordArray
+    function generatePassword() {
+        for (let i=0; i<passLength; i++) {
+            // this spits out a random character from the array with all the selected character types
+            let randomChar = masterArray[Math.floor(Math.random() * masterArray.length)];
+            // this adds the randomly selected character to the end of passwordArray
+            passwordArray.push(randomChar);
         };
     };
 
-    passLengthQuestion();
+    generatePassword();
 
-    function passCharacters() {
-        // this inquires about what content should be included in the generated password 
-        let lowerCase = window.confirm("Would you like your password to have any lowercase letters? \na, b, c, d... etc.");
-        let upperCase = window.confirm("Would you like your password to have any uppercase letters? \nA, B, C, D... etc.");
-        let numeric = window.confirm("Would you like your password to include numbers? \n1, 2, 3, 4... etc.");
-        let special = window.confirm("Would you like your password to have any special characters? \n!, @, #, $... etc.");
-        
-        // this tells the user to go back and try again if they don't confirm any values 
-        if (!lowerCase && !upperCase && !numeric && !special) {
-            window.alert("Error. You must choose at least one character type.");
-            //this sends the user back to the beginning of the window.confirms 
-            passCharacters();
-        };
-    };
+    // this joins the elements from passwordArray such that the result is a single string with no spaces or commas separating the different characters
+    let password = passwordArray.join("");
 
-    passCharacters();
-
-    // create arrays for lower, upper, numeric, and special
-
-    /*
-        create the for loop that will generate the password. 
-        the loop should Math.floor(Math.random) on the relevant array and then add that 
-        to a string defined OUTSIDE the loop (according to Brandon :))
-    */
+    // this picks out the textarea (id="password") and changes its content to that of password
+    document.querySelector("#password").innerHTML = password;
 };
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
-
-function generatePassword() {
-    return "The Wizard";
-}
