@@ -47,25 +47,20 @@ function writePassword() {
     };
 
     // this is the empty array the random characters will be added to
-    let passwordArray = [];
+    let passwordString = "";
 
     // this generates a random character (for each iteration) that is then added to the empty passwordArray
     function generatePassword() {
         for (let i=0; i<passLength; i++) {
-            // this spits out a random character from the array with all the selected character types
-            let randomChar = masterArray[Math.floor(Math.random() * masterArray.length)];
-            // this adds the randomly selected character to the end of passwordArray
-            passwordArray.push(randomChar);
+            // this spits out a random character from masterArray and adds it to passwordString
+            passwordString += masterArray[Math.floor(Math.random() * masterArray.length)];
         };
     };
 
     generatePassword();
 
-    // this joins the elements from passwordArray such that the result is a single string with no spaces or commas separating the different characters
-    let password = passwordArray.join("");
-
-    // this picks out the textarea (id="password") and changes its content to that of password
-    document.querySelector("#password").innerHTML = password;
+    // this picks out the textarea (id="password") and changes its content to that of passwordString
+    document.querySelector("#password").innerHTML = passwordString;
 };
 
 // Add event listener to generate button
