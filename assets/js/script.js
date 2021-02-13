@@ -1,5 +1,10 @@
 // Assignment Code
 let generateBtn = document.querySelector("#generate");
+// arrays for lower, upper, numeric, and special
+let lowerCaseArray = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+let upperCaseArray = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+let numericArray = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+let specialArray = [" ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~"];
 
 // Write password to the #password input
 function writePassword() {
@@ -14,22 +19,16 @@ function writePassword() {
     };
 
     // this inquires about what content should be included in the generated password 
-    let lowerCase = window.confirm("Would you like your password to have any lowercase letters? \na, b, c, d... etc.");
-    let upperCase = window.confirm("Would you like your password to have any uppercase letters? \nA, B, C, D... etc.");
-    let numeric = window.confirm("Would you like your password to include numbers? \n1, 2, 3, 4... etc.");
-    let special = window.confirm("Would you like your password to have any special characters? \n!, @, #, $... etc.");
+    let lowerCase = window.confirm("Click \"OK\" to include lowercase letters in your password. \na, b, c, d... etc. \n\nOtherwise, click \"Cancel.\"");
+    let upperCase = window.confirm("Click \"OK\" to include uppercase letters in your password. \nA, B, C, D... etc. \n\nOtherwise, click \"Cancel.\"");
+    let numeric = window.confirm("Click \"OK\" to include numbers in your password. \n1, 2, 3, 4... etc. \n\nOtherwise, click \"Cancel.\"");
+    let special = window.confirm("Click \"OK\" to include special characters in your password. \n!, @, #, $... etc. \n\nOtherwise, click \"Cancel.\"");
 
-    // 
+    // failsafe to ensure user chooses at least one character type
     if (!lowerCase && !upperCase && !numeric && !special) {
         window.alert("Error. You must choose at least one character type.");
         return; 
     };
-
-    // arrays for lower, upper, numeric, and special
-    let lowerCaseArray = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-    let upperCaseArray = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-    let numericArray = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-    let specialArray = [" ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~"];
 
     // the following creates the master array based on user's choice of character types to include 
     let masterArray = [];
@@ -49,19 +48,16 @@ function writePassword() {
     // this is the empty array the random characters will be added to
     let passwordString = "";
 
-    // this generates a random character (for each iteration) that is then added to the empty passwordArray
-    function generatePassword() {
-        for (let i=0; i<passLength; i++) {
-            // this spits out a random character from masterArray and adds it to passwordString
-            passwordString += masterArray[Math.floor(Math.random() * masterArray.length)];
-        };
-    };
+    // this generates a random character (for each iteration) that is then added to passwordString
 
-    generatePassword();
+    for (let i=0; i<passLength; i++) {
+        // this spits out a random element from masterArray and adds it to passwordString
+        passwordString += masterArray[Math.floor(Math.random() * masterArray.length)];
+    };
 
     // this picks out the textarea (id="password") and changes its content to that of passwordString
     document.querySelector("#password").innerHTML = passwordString;
 };
 
-// Add event listener to generate button
+// event listener to generate button
 generateBtn.addEventListener("click", writePassword);
